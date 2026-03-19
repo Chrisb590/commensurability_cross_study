@@ -4,6 +4,10 @@ Code and data used to reproduce the analyses in this study.
 
 ## Repository structure
 
+### Appendix
+- **additional_appendix.pdf**  
+  Tables S1, S6, S10, and S11, archived separately because they exceed the publisher's length limits for supporting information tables.
+
 ### Data
 - **general_network_information.csv**  
   Information on network type (pollination or seed-dispersal), publication grouping, and latitude and longitude for each network.
