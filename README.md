@@ -1,6 +1,6 @@
 # Commensurability and cross-study inference in quantitative species interaction networks
 
-Code and data used to reproduce the analyses in this study.
+Code and data used to reproduce the analyses in this study, along with archived materials referenced in the manuscript.
 
 ## Repository structure
 
