@@ -4,9 +4,16 @@ Code and data used to reproduce the analyses in this study.
 
 ## Repository structure
 
-### Appendix
-- **additional_appendix.pdf**  
-  Tables S1, S6, S10, and S11, archived separately because they exceed the publisher's length limits for supporting information tables.
+### Archived materials
+- **Archived_taxonomic_name_corrections.pdf**  
+  Modifications to the taxonomic identifiers (i.e., string names) of nodes in networks.
+
+- **Archived_null_network_corrections.pdf**  
+  (a) Percent differences between Patefield null models (Patefield, 1981) and empirical networks for specialization, nestedness, and modularity.  
+  (b) Percent differences between Vaznull null models (Vazquez et al., 2007) and empirical networks for specialization, nestedness, and modularity.
+
+- **Archived_networks_and_publication_sources.pdf**  
+  A list of the open-access bipartite networks and their publication sources used in this study.
 
 ### Data
 - **general_network_information.csv**  
