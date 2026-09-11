@@ -63,6 +63,20 @@ Code and data used to reproduce the analyses in this study, along with archived 
 - **sampling_method_and_edge_weight.R**  
   Generates Figure 4 (two panels), showing publication-collapsed frequencies of (i) sampling methods used to observe species interactions and (ii) edge-weight definitions.
   
+## Installing dependencies
+
+The R packages used by the scripts in `R/` are listed in the `DESCRIPTION` file. From the repository root, install them with either:
+
+```r
+# using pak
+install.packages("pak")
+pak::pak()
+
+# or using remotes
+install.packages("remotes")
+remotes::install_deps()
+```
+
 ## Contact
 
 For questions about the data or code, please contact:
