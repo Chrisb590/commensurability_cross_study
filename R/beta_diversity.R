@@ -11,11 +11,15 @@ library(readr)
 #
 ################################################################################
 
-metadata <- read_csv(here("general_network_information.csv"))
+# Directory where all figures and tables are written (created if missing)
+output_dir <- here("output")
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+
+metadata <- read_csv(here("data", "general_network_information.csv"))
 
 # Directories where beta-diversity (for rows and columns) CSVs are stored
-row_dir <- here("networks", "row_names")
-col_dir <- here("networks", "column_names")
+row_dir <- here("data", "networks", "row_names")
+col_dir <- here("data", "networks", "column_names")
 
 # Interaction types for file names
 interaction_types <- c("Seed_Dispersal", "Pollination")
@@ -217,7 +221,7 @@ print(p_beta_dot)
 
 # Save final plot as PDF
 ggsave(
-  "beta_diversity.pdf",
+  file.path(output_dir, "beta_diversity.pdf"),
   device = cairo_pdf,
   width = 12,
   height = 5,
@@ -275,3 +279,6 @@ final_within_between_tbl <- beta_medians_tbl %>%
   arrange(Set, Guild, Interaction)
 
 print(final_within_between_tbl)
+
+# Save table
+write_csv(final_within_between_tbl, file.path(output_dir, "beta_diversity_within_between_publications.csv"))

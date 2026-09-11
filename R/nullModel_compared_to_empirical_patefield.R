@@ -13,11 +13,15 @@ library(here)
 #
 ################################################################################
 
+# Directory where all figures and tables are written (created if missing)
+output_dir <- here("output")
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+
 # Patefield randomization results
-results_df <- read_csv(here("all_results_for_patefield_randomization.csv"))
+results_df <- read_csv(here("data", "all_results_for_patefield_randomization.csv"))
 
 # Metadata
-metadata <- read_csv(here("general_network_information.csv"))
+metadata <- read_csv(here("data", "general_network_information.csv"))
 metadata$Publication <- as.character(metadata$Publication)
 
 # Parse Patefield null columns into lists
@@ -178,7 +182,7 @@ p_combined <- p1 / p2 / p3 + plot_layout(guides = "collect") & theme(legend.posi
 print(p_combined)
 
 ggsave(
-  "combined_plot_patefield.pdf",
+  file.path(output_dir, "combined_plot_patefield.pdf"),
   plot = p_combined,
   width = 13,
   height = 11
@@ -294,6 +298,7 @@ bias_sd_comparison <- summary_other_unweighted %>%
   mutate(across(where(is.numeric), ~ round(.x, 2)))
 
 print(bias_sd_comparison)
+write_csv(bias_sd_comparison, file.path(output_dir, "table_3_S4_patefield_sd_delta_z_by_publication_grouping.csv"))
 
 ################################################################################
 #
@@ -349,7 +354,8 @@ pub_metric_summary_12 <- pub_metric_summary %>%
   ) %>%
   mutate(across(where(is.numeric), ~ round(.x, 2)))
 
-pub_metric_summary_12
+print(pub_metric_summary_12, n = Inf)
+write_csv(pub_metric_summary_12, file.path(output_dir, "table_S3_S5_patefield_mean_sd_by_publication.csv"))
 
 ################################################################################
 #
@@ -373,4 +379,5 @@ percent_difference_for_each_network <- results_df %>%
   ) %>%
   mutate(across(where(is.numeric), ~ round(.x, 2)))
 
-percent_difference_for_each_network
+print(percent_difference_for_each_network, n = Inf)
+write_csv(percent_difference_for_each_network, file.path(output_dir, "table_S6_patefield_percent_difference_per_network.csv"))

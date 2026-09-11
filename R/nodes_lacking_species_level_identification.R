@@ -12,9 +12,13 @@ library(readr)
 #
 ################################################################################
 
-metadata <- read_csv(here("general_network_information.csv"))
-fricke_metadata <- read_csv(here("fricke_metadata.csv"))
-pollination_metadata <- read_csv(here("pollination_sampling_metadata.csv"))
+# Directory where all figures and tables are written (created if missing)
+output_dir <- here("output")
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+
+metadata <- read_csv(here("data", "general_network_information.csv"))
+fricke_metadata <- read_csv(here("data", "fricke_metadata.csv"))
+pollination_metadata <- read_csv(here("data", "pollination_sampling_metadata.csv"))
 
 # Making sure Fricke networks are labelled the same as pollination 
 fricke_metadata$net_id <- gsub(" ", "_", fricke_metadata$net_id)
@@ -34,11 +38,9 @@ both_combined <- both_combined %>%
   )
 
 # Network directories
-net_dir <- "networks"
+net_dir <- here("data", "networks")
 row_dir <- file.path(net_dir, "row_names")
 col_dir <- file.path(net_dir, "column_names")
-dir.create(row_dir, recursive = TRUE, showWarnings = FALSE)
-dir.create(col_dir, recursive = TRUE, showWarnings = FALSE)
 
 # Network CSVs and their network IDs
 all_csv_paths <- list.files(net_dir, pattern = "\\.csv$", full.names = TRUE)
@@ -257,7 +259,7 @@ p_combined <- ggplot(plot_df, aes(x = bin, y = n, fill = TYPE)) +
 
 print(p_combined)
 
-ggsave("unidentified_species_percent.pdf", plot = last_plot(), device = "pdf", width = 10, height = 5, units = "in", dpi = 600)
+ggsave(file.path(output_dir, "unidentified_species_percent.pdf"), plot = last_plot(), device = "pdf", width = 10, height = 5, units = "in", dpi = 600)
 
 ################################################################################
 #
@@ -291,7 +293,8 @@ avg_by_publication <- both_combined %>%
     .groups = "drop"
   ) %>%
   arrange(desc(avg_unidentified_pct))
-avg_by_publication
+print(avg_by_publication, n = Inf)
+write_csv(avg_by_publication, file.path(output_dir, "unidentified_species_percent_per_publication.csv"))
 
 # Fix accents in Publication names (UTF-8 safe)
 both_combined$Publication <- enc2utf8(both_combined$Publication)
@@ -402,7 +405,7 @@ p_unid <- ggplot(both_combined_for_plot,
 
 print(p_unid)
 
-ggsave("unidentified_species_percent_per_publication.pdf", plot = last_plot(), device = "pdf", width = 9, height = 7, units = "in", dpi = 600)
+ggsave(file.path(output_dir, "unidentified_species_percent_per_publication.pdf"), plot = last_plot(), device = "pdf", width = 9, height = 7, units = "in", dpi = 600)
 
 ################################################################################
 #
@@ -411,10 +414,10 @@ ggsave("unidentified_species_percent_per_publication.pdf", plot = last_plot(), d
 #
 ################################################################################
 
-seed_dispersal_row <- read_csv(here("networks", "row_names", "seed_dispersal_unique_unidentified_row_species_names.csv"))
-seed_dispersal_column <- read_csv(here("networks", "column_names", "seed_dispersal_unique_unidentified_column_species_names.csv"))
-pollination_row <- read_csv(here("networks", "row_names", "pollination_unique_unidentified_row_species_names.csv"))
-pollination_column <- read_csv(here("networks", "column_names", "pollination_unique_unidentified_column_species_names.csv"))
+seed_dispersal_row <- read_csv(here("data", "networks", "row_names", "seed_dispersal_unique_unidentified_row_species_names.csv"))
+seed_dispersal_column <- read_csv(here("data", "networks", "column_names", "seed_dispersal_unique_unidentified_column_species_names.csv"))
+pollination_row <- read_csv(here("data", "networks", "row_names", "pollination_unique_unidentified_row_species_names.csv"))
+pollination_column <- read_csv(here("data", "networks", "column_names", "pollination_unique_unidentified_column_species_names.csv"))
 
 taxonomy_summary <- function(df, filename) {
 
@@ -438,4 +441,5 @@ out_poll_row     <- taxonomy_summary(pollination_row, "pollination_row")
 out_poll_column  <- taxonomy_summary(pollination_column, "pollination_column")
 all_summaries <- rbind(out_seed_row, out_seed_column, out_poll_row, out_poll_column)
 
-all_summaries
+print(all_summaries)
+write_csv(all_summaries, file.path(output_dir, "table_S2_unidentified_taxonomic_resolution.csv"))
