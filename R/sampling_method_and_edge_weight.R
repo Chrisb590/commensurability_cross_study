@@ -11,10 +11,14 @@ library(readr)
 #
 ################################################################################
 
+# Directory where all figures and tables are written (created if missing)
+output_dir <- here("output")
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+
 # Location of data
-metadata <- read_csv(here("general_network_information.csv"))
-fricke_metadata <- read_csv(here("fricke_metadata.csv"))
-pollination_metadata <- read_csv(here("pollination_sampling_metadata.csv"))
+metadata <- read_csv(here("data", "general_network_information.csv"))
+fricke_metadata <- read_csv(here("data", "fricke_metadata.csv"))
+pollination_metadata <- read_csv(here("data", "pollination_sampling_metadata.csv"))
 
 # Making sure Fricke networks are labelled the same as pollination
 fricke_metadata$net_id <- gsub(" ", "_", fricke_metadata$net_id)
@@ -236,6 +240,12 @@ print(pct_collapsed_method_seed, n = Inf)
 print(pct_collapsed_unit_pollination, n = Inf)
 print(pct_collapsed_unit_seed, n = Inf)
 
+# Save tables
+write_csv(pct_collapsed_method_pollination, file.path(output_dir, "sampling_method_publication_collapsed_pollination.csv"))
+write_csv(pct_collapsed_method_seed,        file.path(output_dir, "sampling_method_publication_collapsed_seed_dispersal.csv"))
+write_csv(pct_collapsed_unit_pollination,   file.path(output_dir, "edge_weight_publication_collapsed_pollination.csv"))
+write_csv(pct_collapsed_unit_seed,          file.path(output_dir, "edge_weight_publication_collapsed_seed_dispersal.csv"))
+
 ################################################################################
 #
 # Figure 4
@@ -379,7 +389,7 @@ combined_plot <- (p1 / p2) +
 print(combined_plot)
 
 ggsave(
-  "sampling_unit_and_sampling_method_publication_collapsed.pdf",
+  file.path(output_dir, "sampling_unit_and_sampling_method_publication_collapsed.pdf"),
   plot = combined_plot,
   device = cairo_pdf,
   width = 15,

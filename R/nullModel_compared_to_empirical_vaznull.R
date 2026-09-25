@@ -8,7 +8,22 @@ library(patchwork)
 library(showtext)
 library(here)
 showtext_auto()
-font_add("courier", "C:/Windows/Fonts/cour.ttf")
+
+# Register a Courier-like font for the "vaznull" legend label. The first font
+# file found is used; if none is found the default monospace font is used.
+courier_candidates <- c(
+  "C:/Windows/Fonts/cour.ttf",                                        # Windows
+  "/Library/Fonts/Courier New.ttf",                                   # macOS
+  "/System/Library/Fonts/Supplemental/Courier New.ttf",               # macOS
+  "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf",  # Linux
+  "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"               # Linux
+)
+courier_path <- courier_candidates[file.exists(courier_candidates)]
+if (length(courier_path) > 0) {
+  font_add("courier", courier_path[1])
+} else {
+  message("No Courier-like font file found; using default monospace font.")
+}
 
 ################################################################################
 #
@@ -16,11 +31,15 @@ font_add("courier", "C:/Windows/Fonts/cour.ttf")
 #
 ################################################################################
 
+# Directory where all figures and tables are written (created if missing)
+output_dir <- here("output")
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+
 # Vaznull randomization results
-results_df <- read_csv(here("all_results_vaznull_randomizations.csv"))
+results_df <- read_csv(here("data", "all_results_vaznull_randomizations.csv"))
 
 # Metadata
-metadata <- read_csv(here("general_network_information.csv"))
+metadata <- read_csv(here("data", "general_network_information.csv"))
 metadata$Publication <- as.character(metadata$Publication)
 
 # Parse Vaznull columns into lists
@@ -194,7 +213,7 @@ p_combined <- p1 / p2 / p3 +
 print(p_combined)
 
 ggsave(
-  "combined_plot_vaznull.pdf",
+  file.path(output_dir, "combined_plot_vaznull.pdf"),
   plot = p_combined,
   width = 13,
   height = 11
@@ -310,6 +329,7 @@ bias_sd_comparison <- summary_other_unweighted %>%
   mutate(across(where(is.numeric), ~ round(.x, 2)))
 
 print(bias_sd_comparison)
+write_csv(bias_sd_comparison, file.path(output_dir, "table_4_S8_vaznull_sd_delta_z_by_publication_grouping.csv"))
 
 ################################################################################
 #
@@ -365,7 +385,8 @@ pub_metric_summary_12 <- pub_metric_summary %>%
   ) %>%
   mutate(across(where(is.numeric), ~ round(.x, 2)))
 
-pub_metric_summary_12
+print(pub_metric_summary_12, n = Inf)
+write_csv(pub_metric_summary_12, file.path(output_dir, "table_S7_S9_vaznull_mean_sd_by_publication.csv"))
 
 ################################################################################
 #
@@ -389,4 +410,8 @@ percent_difference_for_each_network <- results_df %>%
   ) %>%
   mutate(across(where(is.numeric), ~ round(.x, 2)))
 
-percent_difference_for_each_network
+print(percent_difference_for_each_network, n = Inf)
+write_csv(percent_difference_for_each_network, file.path(output_dir, "table_S10_vaznull_percent_difference_per_network.csv"))
+
+# Turn showtext off again so later graphics are not affected
+showtext_auto(FALSE)

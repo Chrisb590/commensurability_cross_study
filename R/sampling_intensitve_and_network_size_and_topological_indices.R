@@ -12,9 +12,13 @@ library(here)
 #
 ################################################################################
 
-net_dir <- here("networks")
+# Directory where all figures and tables are written (created if missing)
+output_dir <- here("output")
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
-meta <- read_csv(here("general_network_information.csv"), show_col_types = FALSE) %>%
+net_dir <- here("data", "networks")
+
+meta <- read_csv(here("data", "general_network_information.csv"), show_col_types = FALSE) %>%
   mutate(
     ID = trimws(ID),
     TYPE = trimws(TYPE) %>%
@@ -39,7 +43,7 @@ csv_files <- list.files(net_dir, pattern = "\\.csv$", full.names = TRUE)
 
 # Since H2', NODF, weighted modularity is already calculated in Patefield 
 # randomization, I can just read them in
-indices <- read_csv("all_results_for_patefield_randomization.csv", show_col_types = FALSE) %>%
+indices <- read_csv(here("data", "all_results_for_patefield_randomization.csv"), show_col_types = FALSE) %>%
   transmute(
     ID = str_trim(ID),
     H2 = as.numeric(H2),
@@ -259,9 +263,12 @@ final_plot_log <- (p_top | p_h2_log) /
 print(final_plot_log)
 
 ggsave(
-  "sampling_intensity_topological_indices.pdf",
+  file.path(output_dir, "sampling_intensity_topological_indices.pdf"),
   plot = last_plot(),
   width = 9.2,
   height = 9.2,
   units = "in"
 )
+
+# Save the per-network indices used in the figure
+write_csv(results, file.path(output_dir, "sampling_intensity_and_network_indices.csv"))
