@@ -104,7 +104,7 @@ or, from an R session opened in the repository:
 source("run_analysis.R")
 ```
 
-Scripts can also be run individually. All figures (PDF) and tables (CSV, plus one TXT file with the model summaries for Table 2) are written to `output/`.
+Scripts can also be run individually. All figures (PDF) and tables (CSV) are written to `output/`.
 
 ## Contact
 
