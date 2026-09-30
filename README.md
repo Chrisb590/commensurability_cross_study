@@ -26,13 +26,16 @@ All input data live in `data/`.
 
 - **data/all_results_vaznull_randomizations.csv**  
   Observed network indices (weighted specialization, weighted nestedness, weighted modularity) and the corresponding values obtained from 1000 Vázquez null-model randomizations for each network.
+  
+- **data/rarefaction_sensitivity_500_iterations.csv**  
+  Network indices (weighted specialization, weighted nestedness, weighted modularity) calculated after rarefying observed networks to 50, 100, and 200 interactions, with 500 iterations at each rarefaction depth.
 
 - **data/fricke_metadata.csv**  
   Seed-dispersal network metadata from Fricke, E. C. and J.-C. Svenning (2020), *Accelerating homogenization of the global plant–frugivore meta-network*.
 
 - **data/pollination_sampling_metadata.csv**  
   Pollination network metadata compiled by us for the analyses in this repository.
-
+  
 ### Network data
 - **data/networks/**  
   All 279 bipartite networks used in this study.
@@ -47,25 +50,31 @@ All input data live in `data/`.
 All scripts live in `R/`. Each script reads from `data/` and writes its figures and tables to `output/` (created automatically if missing). Paths are resolved with the `here` package, so scripts can be run from any working directory inside the repository.
 
 - **R/beta_diversity.R**  
-  Generates Figure 3, showing beta diversity among guilds (plants, animals) and publication groupings ("One network per publication", "Multiple networks per publication") within each network type.
+  Generates Figure 3 and Table S1, comparing within- and between-publication beta diversity by guild and network type, and evaluating the effects of geographic distance and publication identity on beta diversity.
 
 - **R/linear_models_vs_linear_mixed_models.R**  
-  Generates Table 2 by fitting linear models and linear mixed models to explain weighted specialization, weighted nestedness, and weighted modularity in pollination and seed-dispersal networks.
+  Generates Table 2, comparing the relationships between latitude and network indices (weighted specialization, weighted nestedness, and weighted modularity) using linear models and linear mixed models that account for publication-level variation.
 
-- **R/nodes_lacking_species_level_identification.R**  
-  Generates Figures 5 and S2, and Table S2. Quantifies: (i) the percentage of nodes lacking species-level identification in each network, summarized by publication grouping (Figure 5), (ii) the percentage of nodes lacking species-level identification in each network across all networks (Figure S2), and (iii) the finest available taxonomic resolution for nodes lacking species-level identification (Table S2).  
+- **R/taxonomic_resolution_analysis.R**  
+  Generates Figures 5 and S2 and Table S2, summarizing the percentage of nodes lacking species-level identification and their finest available taxonomic resolution.
 
-- **R/nullModel_compared_to_empirical_patefield.R**  
-  Generates Figure S4 and Tables 3, S3, S4, S5, and S6. Quantifies: (i) weighted specialization, weighted nestedness, and weighted modularity for each network and its corresponding 1000 Patefield null-model realizations, summarized by publication grouping (Figure S4); (ii) the standard deviation of delta values for these indices across 1000 Patefield null-model realizations for "One network per publication" and "Multiple networks per publication", separated by pollination and seed-dispersal (Table 3); (iii) the exact values underlying Figure S4 for the observed networks, along with the mean and standard deviation of delta values from 1000 Patefield null-model realizations for each index by publication grouping (Table S3); (iv) the standard deviation of z-scores for these indices relative to 1000 Patefield null-model realizations for each index in "One network per publication" and "Multiple networks per publication", separated by pollination and seed-dispersal (Table S4); (v) the mean and standard deviation of z-scores for these indices relative to 1000 Patefield null-model realizations for each publication grouping (Table S5); and (vi) the percent difference between each observed network index and the mean of its 1000 Patefield null-model realizations (Table S6).
+- **R/patefield_null_model_analysis.R**  
+  Generates Figure S4 and Tables 4 and S6–S8, comparing observed network indices with 1,000 Patefield null-model realizations and summarizing within- and between-publication variation in null-corrected indices.
   
-- **R/nullModel_compared_to_empirical_vaznull.R**  
-  Generates Figure S5 and Tables 4, S7, S8, S9, and S10. Quantifies: (i) weighted specialization, weighted nestedness, and weighted modularity for each network and its corresponding 1000 Vázquez null-model realizations, summarized by publication grouping (Figure S5); (ii) the standard deviation of delta values for these indices across 1000 Vázquez null-model realizations for "One network per publication" and "Multiple networks per publication", separated by pollination and seed-dispersal (Table 4); (iii) the exact values underlying Figure S5 for the observed networks, along with the mean and standard deviation of delta values from 1000 Vázquez null-model realizations for each index by publication grouping (Table S7); (iv) the standard deviation of z-scores for these indices, relative to 1000 Vázquez null-model realizations, for "One network per publication" and "Multiple networks per publication", separated by pollination and seed-dispersal (Table S8); (v) the mean and standard deviation of z-scores for these indices relative to 1000 Vázquez null-model realizations for each publication grouping (Table S9); and (vi) the percent difference between each observed network index and the mean of its 1000 Vázquez null-model realizations (Table S10).
+- **R/vaznull_model_analysis.R**  
+  Generates Figure S5 and Tables 5 and S9–S11, comparing observed network indices with 1,000 Vázquez null-model realizations and summarizing within- and between-publication variation in null-corrected indices.
   
-- **R/sampling_intensitve_and_network_size_and_topological_indices.R**  
-  Generates Figure 6 (four panels), showing the relationships between (i) sampling intensity and network size, (ii) weighted specialization and sampling intensity, (iii) weighted nestedness and sampling intensity, and (iv) weighted modularity and sampling intensity.
+- **R/sampling_intensity_and_network_topology.R**  
+  Generates Figure 6, illustrating the relationships between network size, sampling intensity, and network indices (weighted specialization, weighted nestedness, and weighted modularity).
   
-- **R/sampling_method_and_edge_weight.R**  
-  Generates Figure 4 (two panels), showing publication-collapsed frequencies of (i) sampling methods used to observe species interactions and (ii) edge-weight definitions.
+- **R/interaction_recording_and_edge_weight_units.R**  
+  Generates Figure 4, illustrating the publication-collapsed frequencies of sampling methods and edge-weight definitions.
+  
+- **R/rarefaction.R**  
+  Generates Tables 3 and S3–S5, summarizing network indices and comparing within- and between-publication variation after rarefaction to 50, 100, and 200 interactions.
+  
+- **R/map_of_locations.R**  
+  Generates Figure S1, illustrating the geographic distribution of pollination and seed-dispersal networks, with point sizes indicating the number of networks at each location.
   
 ## Installing dependencies
 

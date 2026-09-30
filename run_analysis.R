@@ -14,11 +14,13 @@ library(here)
 scripts <- c(
   "beta_diversity.R",
   "linear_models_vs_linear_mixed_models.R",
-  "nodes_lacking_species_level_identification.R",
-  "nullModel_compared_to_empirical_patefield.R",
-  "nullModel_compared_to_empirical_vaznull.R",
-  "sampling_intensitve_and_network_size_and_topological_indices.R",
-  "sampling_method_and_edge_weight.R"
+  "taxonomic_resolution_analysis.R",
+  "patefield_null_model_analysis.R",
+  "vaznull_model_analysis.R",
+  "interaction_recording_and_edge_weight_units.R",
+  "sampling_intensity_and_network_topology.R",
+  "rarefaction.R",
+  "map_of_locations.R"
 )
 
 # Each script is sourced in its own environment so that objects defined in one
